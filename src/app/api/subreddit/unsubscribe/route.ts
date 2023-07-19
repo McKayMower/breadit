@@ -19,15 +19,30 @@ export async function POST(req: Request) {
       },
     });
 
-    if (subscriptionExists)
-      return new Response("You are already subscribed to this subreddit.", {
+    if (!subscriptionExists)
+      return new Response("You are not subscribed to this subreddit.", {
         status: 400,
       });
 
-    await db.subscription.create({
-      data: {
-        subredditId: subredditId,
-        userId: session.user.id,
+    // check if user is creator of the subreddit
+    const creator = await db.subreddit.findFirst({
+      where: {
+        id: subredditId,
+        creatorId: session.user.id,
+      },
+    });
+
+    if (creator)
+      return new Response("You cannot unsubscribe from your own subreddit.", {
+        status: 400,
+      });
+
+    await db.subscription.delete({
+      where: {
+        userId_subredditId: {
+          subredditId: subredditId,
+          userId: session.user.id,
+        },
       },
     });
 
@@ -37,7 +52,7 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError)
       return new Response(error.message, { status: 422 });
 
-    return new Response("Could not subscribe. Please try again.", {
+    return new Response("Could not unsubscribe. Please try again.", {
       status: 500,
     });
   }
