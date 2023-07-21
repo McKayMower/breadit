@@ -33,7 +33,6 @@ const page = async ({ params }: PageProps) => {
     },
   });
 
-  console.log(subreddit?.posts);
   if (!subreddit) return notFound();
 
   return (
