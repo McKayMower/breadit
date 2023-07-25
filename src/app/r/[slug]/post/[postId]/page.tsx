@@ -70,7 +70,14 @@ const page = async ({ params }: pageProps) => {
           </h1>
 
           <EditorOutput content={post?.content ?? cachedPost.content} />
-          
+
+          <Suspense
+            fallback={
+              <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
+            }
+          >
+            <CommentsSection />
+          </Suspense>
         </div>
       </div>
     </div>
