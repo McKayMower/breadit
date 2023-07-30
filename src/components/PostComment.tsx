@@ -91,6 +91,7 @@ const PostComment: FC<PostCommentProps> = ({
 
       <p className="text-sm text-zinc-900 mt-2">{comment.text}</p>
 
+      {/** can potentially add flex-wrap to this div */}
       <div className="flex gap-2 items-center">
         <CommentVotes
           commentId={comment.id}

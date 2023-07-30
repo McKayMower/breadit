@@ -14,7 +14,7 @@ import { Textarea } from "./ui/Textarea";
 
 interface CreateCommentProps {
   postId: string;
-  replyToId?: string;
+  replyToId?: string; // not always replying to someone
 }
 
 const CreateComment: FC<CreateCommentProps> = ({ postId, replyToId }) => {
